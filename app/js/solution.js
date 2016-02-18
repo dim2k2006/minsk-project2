@@ -16,251 +16,244 @@
         // todo: построить правильный маршрут к выходу
         var walker = {
             cycle: 0,
-            limit: 200,
+            limit: 134,
             min: [0, 0],
             max: [maze[0].length, maze.length],
             currentX: 1,
             currentY: 0,
+            direction: 0,
             path: [],
-            walkStraightRight: function () {
-                while (true) {
-                    // Предел запусков
-                    if (this.cycle > this.limit) {
-                        console.log('Превышен предел запусков');
-                        break;
-                    }
+            exit: false,
+            findWall: function () {
+                // if (this.cycle < this.limit) {
+                    // this.cycle = this.cycle + 1;
 
-                    this.cycle = this.cycle + 1;
                     
+                    // Ищет стену справа (взависимости от направления движения)
+                    // console.log('');
+                    // console.log('/----Найти стену---/');
 
-                    // Если ячейка справа 0 (пустая ячейка)
-                    if (maze[this.currentY][this.currentX - 1] === 0) {
-                        this.currentX = this.currentX - 1;
-                        this.path.push([this.currentX, this.currentY]);
-                    }
+                    // Двигаюсь вперед, стена справа
+                    if (this.direction === 0) {
+                        if (maze[this.currentY][this.currentX - 1] !== -1) {
+                            this.currentX = this.currentX - 1;
+                            this.path.push([this.currentX, this.currentY]);
 
+                            // console.log('Ищу стену справа');
 
-                    // Если ячейка спереди -1 (стена) и ячейка справа -1 (стена)
-                    if (maze[this.currentY + 1][this.currentX] === -1 && maze[this.currentY][this.currentX - 1] === -1) {
-                        this.path.push([this.currentX, this.currentY]);
-                        console.log('Движение влево-прямо');
-                        this.walkLeftStraight();
-                        break;
-                    }
+                            // Если вышел на угол, движение назад
+                            if (maze[this.currentY - 1][this.currentX] === 0) {
+                                this.currentY = this.currentY - 1;
+                                this.path.push([this.currentX, this.currentY]);
+                                this.direction = 180;
+                            }
 
-                    // Если ячейка справа -1 (стена) и ячейка спереди 0 (пустая ячейка)
-                    if (maze[this.currentY][this.currentX - 1] === -1 && maze[this.currentY + 1][this.currentX] === 0) {
-                        this.currentY = this.currentY + 1;
-                        this.path.push([this.currentX, this.currentY]);
-                    }
-                }
-            },
-            walkLeftStraight: function () {
-                while (true) {
-                    // Предел запусков
-                    if (this.cycle > this.limit) {
-                        console.log('Превышен предел запусков');
-                        break;
-                    }
-
-                    this.cycle = this.cycle + 1;
-                    
-
-                    // Если ячейка спереди 0 (пустая ячейка)
-                    if (maze[this.currentY + 1][this.currentX] === 0) {
-                        this.currentY = this.currentY + 1;
-                        this.path.push([this.currentX, this.currentY]);
-                    }
-
-                    // Если ячейка слева 0 (пустая ячейка) и ячейка спереди -1 (стена)
-                    if (maze[this.currentY][this.currentX + 1] === 0 && maze[this.currentY + 1][this.currentX] === -1) {
-                        this.currentX = this.currentX + 1;
-                        this.path.push([this.currentX, this.currentY]);
-                    }
-
-                    // Если ячейка слева = -1 (стена)
-                    if (maze[this.currentY][this.currentX + 1] === -1) {
-                        console.log('Движение назад-влево');
-                        this.walkBackLeft();
-                        break;
-                    }
-                }
-            },
-            walkBackLeft: function () {
-                while (true) {
-                    // Предел запусков
-                    if (this.cycle > this.limit) {
-                        console.log('Превышен предел запусков');
-                        break;
-                    }
-
-                    this.cycle = this.cycle + 1;
-                    
-
-                    // Если ячейка слева 0 (пустая ячейка)
-                    if (maze[this.currentY][this.currentX + 1] === 0) {
-                        this.currentX = this.currentX + 1;
-                        this.path.push([this.currentX, this.currentY]);
-                    }
-
-                    // Если ячейка слева -1 (стена) и ячейка сзади 0 (пустая ячейка)
-                    if (maze[this.currentY][this.currentX + 1] === -1 && maze[this.currentY - 1][this.currentX] === 0) {
-                        this.currentY = this.currentY - 1;
-                        this.path.push([this.currentX, this.currentY]);
-                    }
-
-                    // Если ячейка сзади -1 (стена) и ячейка слева -1 (стена)
-                    if (maze[this.currentY - 1][this.currentX] === -1 && maze[this.currentY][this.currentX + 1] === -1) {
-                        console.log('Движение вправо-назад');
-                        this.walkRightBack();
-                        break;
-                    }
-
-                    // Если ячейка сзади -1 (стена)
-                    if (maze[this.currentY - 1][this.currentX] === -1) {
-                        console.log('Движение влево-назад');
-                        this.walkLeftBack();
-                        break;
-                    }
-                }
-            },
-            walkLeftBack: function () {
-                while (true) {
-                    // Предел запусков
-                    if (this.cycle > this.limit) {
-                        console.log('Превышен предел запусков');
-                        break;
-                    }
-
-                    this.cycle = this.cycle + 1;
-                    
-
-                    // Если ячейка сзади 0 (пустая ячейка)
-                    if (maze[this.currentY - 1][this.currentX] === 0) {
-                        this.currentY = this.currentY - 1;
-                        this.path.push([this.currentX, this.currentY]);
-                    }
-
-                    // Если ячейка ссзади -1 (стена) и ячейка слева 0 (пустая ячейка)
-                    if (maze[this.currentY - 1][this.currentX] === -1 && maze[this.currentY][this.currentX + 1] === 0) {
-                        this.currentX = this.currentX + 1;
-                        this.path.push([this.currentX, this.currentY]);
-                    }
-
-                    // Если ячейка слева -1 (стена)
-                    if (maze[this.currentY][this.currentX + 1] === -1) {
-                        console.log('Движение вперед-влево');
-                        this.walkStraightLeft();
-                        break;
-                    }
-                }
-            },
-            walkStraightLeft: function () {
-                while (true) {
-                    // Предел запусков
-                    if (this.cycle > this.limit) {
-                        console.log('Превышен предел запусков');
-                        break;
-                    }
-
-                    this.cycle = this.cycle + 1;
-                    
-
-                    // Если ячейка слева 0 (пустая ячейка)
-                    if (maze[this.currentY][this.currentX + 1] === 0) {
-                        this.currentX = this.currentX + 1;
-                        this.path.push([this.currentX, this.currentY]);
-                    }
-
-                    // Если ячейка слева -1 (стена) и ячейка спереди 0 (пустая ячейка)
-                    if (maze[this.currentY][this.currentX + 1] === -1 && maze[this.currentY + 1][this.currentX] === 0) {
-                        this.currentY = this.currentY + 1;
-                        this.path.push([this.currentX, this.currentY]);
-                    }
-
-                    // Если ячейка спереди -1 (стена) и ячейка слева -1
-                    if (maze[this.currentY + 1][this.currentX] === -1 && maze[this.currentY][this.currentX + 1] === -1) {
-                        console.log('Движение вправо-вперед');
-                        this.walkRightStraight();
-                        break;
-                    }
-
-                    // Если ячейка спереди -1 (стена)
-                    if (maze[this.currentY + 1][this.currentX] === -1) {
-                        console.log('Движение влево-вперед');
-                        this.walkLeftStraight();
-                        break;
-                    }
-                }
-            },
-            walkRightBack: function () {
-                while (true) {
-                    // Предел запусков
-                    if (this.cycle > this.limit) {
-                        console.log('Превышен предел запусков');
-                        break;
-                    }
-
-                    this.cycle = this.cycle + 1;
-                    
-
-                    // Если ячейка сзади -1 (стена) и ячейка справа 0 (пустая ячейка)
-                    if (maze[this.currentY - 1][this.currentX] === -1 && maze[this.currentY][this.currentX - 1] === 0) {
-                        this.currentX = this.currentX - 1;
-                        this.path.push([this.currentX, this.currentY]);
-                    }
-
-                    // Если ячейка сзади 0 (пустая ячейка)
-                    if (maze[this.currentY - 1][this.currentX] === 0) {
-                        this.currentY = this.currentY - 1;
-                        this.path.push([this.currentX, this.currentY]);
-                    }
-
-                    // Если ячейка сзади -1 (стена) и ячейка слева 0 (пустая ячейка)
-                    if (maze[this.currentY - 1][this.currentX] === -1 && maze[this.currentY][this.currentX + 1] === 0) {
-                        console.log('Движение влево-назад');
-                        this.walkLeftBack();
-                        break;
-                    }
-                }
-            },
-            walkRightStraight: function () {
-                while (true) {
-                    // Предел запусков
-                    if (this.cycle > this.limit) {
-                        console.log('Превышен предел запусков');
-                        break;
-                    }
-
-                    this.cycle = this.cycle + 1;
-                    
-
-                    // Если ячейка справа 0 (пустая ячейка) и ячейка спереди -1 (стена)
-                    if (maze[this.currentY][this.currentX - 1] === 0 && maze[this.currentY + 1][this.currentX] === -1) {
-                        this.currentX = this.currentX - 1;
-                        this.path.push([this.currentX, this.currentY]);
-                    }
-
-                    // Если ячейка спереди 0 (пустая ячейка)
-                    if (maze[this.currentY + 1][this.currentX] === 0) {
-                        this.currentY = this.currentY + 1;
-                        this.path.push([this.currentX, this.currentY]);
-                
-                        // Если текущая ячейка ВЫХОД
-                        if (this.currentY + 1 === this.max[1]) {
-                            console.log('Выход');
-                            break;
+                            this.findWall();
+                        } else {
+                            // console.log('Стена справа');
+                            // console.log('/----Найти стену---/');
+                            this.getDirection();
                         }
                     }
+
+                    // Двигаюсь вправо, стена снизу
+                    if (this.direction === 90) {
+                        if (maze[this.currentY - 1][this.currentX] !== -1) {
+                            this.currentY = this.currentY - 1;
+                            this.path.push([this.currentX, this.currentY]);
+
+                            // console.log('Ищу стену снизу');
+
+                            // Если вышел на угол, движение назад
+                            if (maze[this.currentY - 1][this.currentX] === 0) {
+                                this.currentY = this.currentY - 1;
+                                this.path.push([this.currentX, this.currentY]);
+                                this.direction = 180;
+                            }
+
+                            this.findWall();
+                        } else {
+                            // console.log('Стена снизу');
+                            // console.log('/----Найти стену---/');
+                            this.getDirection();
+                        }
+                    }
+
+                    // Двигаюсь назад, стена слева
+                    if (this.direction === 180) {
+                        if (maze[this.currentY][this.currentX + 1] !== -1) {
+                            this.currentX = this.currentX + 1;
+                            this.path.push([this.currentX, this.currentY]);
+
+                            // console.log('Ищу стену слева');
+
+                            // Если вышел на угол, движение вперед
+                            if (maze[this.currentY + 1][this.currentX] === 0) {
+                                this.currentY = this.currentY + 1;
+                                this.path.push([this.currentX, this.currentY]);
+                                this.direction = 0;
+                            } 
+                            
+                            this.findWall();
+                        } else {
+                            // console.log('Стена слева');
+                            // console.log('/----Найти стену---/');
+                            this.getDirection();
+                        }
+                    }
+
+                    // Двигаюсь влево, стена спереди
+                    if (this.direction === 270) {
+                        if (maze[this.currentY + 1][this.currentX] !== -1) {
+                            this.currentY = this.currentY + 1;
+                            this.path.push([this.currentX, this.currentY]);
+
+                            // console.log('Ищу стену спереди');
+
+                            // Проверить на выход
+                            this.ifExit();
+
+                            // Если вышел на угол, движение вперед
+                            if (maze[this.currentY + 1][this.currentX] === 0) {
+                                this.currentY = this.currentY + 1;
+                                this.path.push([this.currentX, this.currentY]);
+                                this.direction = 0;
+                            }
+
+                            this.findWall();
+                        } else {
+                            // console.log('Стена спереди');
+                            // console.log('/----Найти стену---/');
+                            this.getDirection();
+                        }
+                    }
+                // } else {
+                    // console.log('Превышен лимит запусков');
+                    // return false;
+                // }
+            },
+            getDirection: function () {
+                // if (this.cycle < this.limit) {
+                    // this.cycle = this.cycle + 1;
+
+                    // Получить направление движения взависимости от текущего положения и текущего направления
+                    // console.log('');
+                    // console.log('/---Получить направление--/');
+
+                    // Двигаюсь вперед
+                    if (this.direction === 0) {
+                        // console.log('Текущее направление - вперед');
+
+                        if(maze[this.currentY + 1][this.currentX] === -1) {
+                            this.direction = 270;
+
+                            // console.log('Новое направление - влево');
+                        }
+                    }
+
+                    // Двигаюсь вправо
+                    if (this.direction === 90) {
+                        // console.log('Текущее направление - вправо');
+
+                        if(maze[this.currentY][this.currentX - 1] === -1) {
+                            this.direction = 0;
+
+                            // console.log('Новое направление - вперед');
+                        }
+                    }
+
+                    // Двигаюсь назад
+                    if (this.direction === 180) {
+                        // console.log('Текущее направление - назад');
+
+                        if(maze[this.currentY - 1][this.currentX] === -1) {
+                            this.direction = 90;
+
+                            // console.log('Новое направление - вправо');
+                        }
+                    }
+
+                    // Двигаюсь влево
+                    if (this.direction === 270) {
+                        // console.log('Текущее направление - влево');
+
+                        if (maze[this.currentY][this.currentX + 1] === -1) {
+                            this.direction = 180;
+
+                            // console.log('Новое направление - назад');
+                        }
+                    }
+
+                    // console.log('/---Получить направление--/');
+                    this.walk();
+                // } else {
+                    // console.log('Превышен лимит запусков');
+                    // return false;
+                // }  
+            },
+            walk: function () {
+                if (this.cycle < this.limit) {
+                    this.cycle = this.cycle + 1;
+
+                    // Сделать шаг взависимости от направления
+                    // console.log('');
+                    // console.log('/---Иду---/');
+
+                    // Иду вперед
+                    if (this.direction === 0) {
+                        // console.log('Вперед');
+
+                        this.currentY = this.currentY + 1;
+                        this.path.push([this.currentX, this.currentY]);
+                    }
+
+                    // Иду вправо
+                    if (this.direction === 90) {
+                        // console.log('Вправо');
+
+                        this.currentX = this.currentX - 1;
+                        this.path.push([this.currentX, this.currentY]);
+                    }
+
+                    // Иду назад
+                    if (this.direction === 180) {
+                        // console.log('Назад');
+
+                        this.currentY = this.currentY - 1;
+                        this.path.push([this.currentX, this.currentY]);
+                    }
+
+                    // Иду Влево
+                    if (this.direction === 270) {
+                        // console.log('Влево');
+
+                        this.currentX = this.currentX + 1;
+                        this.path.push([this.currentX, this.currentY]);
+                    }
+
+                    // console.log('/---Иду---/');
+                    console.log('-------------');
+                    console.log(this.currentX);
+                    console.log(this.currentY);
+                    this.findWall();
+                } else {
+                    console.log('Превышен лимит запусков');
+                    return false;
+                }   
+            },
+            ifExit: function () {
+                // Проверка на выход
+                if (this.currentY + 1 === this.max[1]) {
+                    this.exit = true;
+                    console.log('Выход');
                 }
             },
             init: function () {
-                this.walkStraightRight();
+                this.findWall();
             }
         };
 
         walker.init();
-
 
         return walker.path;
     }
