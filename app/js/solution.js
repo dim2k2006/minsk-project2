@@ -133,105 +133,64 @@
                 // }
             },
             getDirection: function () {
-                // if (this.cycle < this.limit) {
-                    // this.cycle = this.cycle + 1;
-
-                    // Получить направление движения взависимости от текущего положения и текущего направления
-                    // console.log('');
-                    // console.log('/---Получить направление--/');
-
-                    // Двигаюсь вперед
-                    if (this.direction === 0) {
-                        // console.log('Текущее направление - вперед');
-
-                        if(maze[this.currentY + 1][this.currentX] === -1) {
-                            this.direction = 270;
-
-                            // console.log('Новое направление - влево');
-                        }
+                // Двигаюсь вперед
+                if (this.direction === 0) {
+                    if(maze[this.currentY + 1][this.currentX] === -1) {
+                        this.direction = 270;
                     }
+                }
 
-                    // Двигаюсь вправо
-                    if (this.direction === 90) {
-                        // console.log('Текущее направление - вправо');
-
-                        if(maze[this.currentY][this.currentX - 1] === -1) {
-                            this.direction = 0;
-
-                            // console.log('Новое направление - вперед');
-                        }
+                // Двигаюсь вправо
+                if (this.direction === 90) {
+                    if(maze[this.currentY][this.currentX - 1] === -1) {
+                        this.direction = 0;
                     }
+                }
 
-                    // Двигаюсь назад
-                    if (this.direction === 180) {
-                        // console.log('Текущее направление - назад');
-
-                        if(maze[this.currentY - 1][this.currentX] === -1) {
-                            this.direction = 90;
-
-                            // console.log('Новое направление - вправо');
-                        }
+                // Двигаюсь назад
+                if (this.direction === 180) {
+                    if(maze[this.currentY - 1][this.currentX] === -1) {
+                        this.direction = 90;
                     }
+                }
 
-                    // Двигаюсь влево
-                    if (this.direction === 270) {
-                        // console.log('Текущее направление - влево');
-
-                        if (maze[this.currentY][this.currentX + 1] === -1) {
-                            this.direction = 180;
-
-                            // console.log('Новое направление - назад');
-                        }
+                // Двигаюсь влево
+                if (this.direction === 270) {
+                    if (maze[this.currentY][this.currentX + 1] === -1) {
+                        this.direction = 180;
                     }
+                }
 
-                    // console.log('/---Получить направление--/');
-                    this.walk();
-                // } else {
-                    // console.log('Превышен лимит запусков');
-                    // return false;
-                // }  
+                this.walk();
             },
             walk: function () {
                 if (this.cycle < this.limit) {
                     this.cycle = this.cycle + 1;
 
-                    // Сделать шаг взависимости от направления
-                    // console.log('');
-                    // console.log('/---Иду---/');
-
                     // Иду вперед
                     if (this.direction === 0) {
-                        // console.log('Вперед');
-
                         this.currentY = this.currentY + 1;
                         this.path.push([this.currentX, this.currentY]);
                     }
 
                     // Иду вправо
                     if (this.direction === 90) {
-                        // console.log('Вправо');
-
                         this.currentX = this.currentX - 1;
                         this.path.push([this.currentX, this.currentY]);
                     }
 
                     // Иду назад
                     if (this.direction === 180) {
-                        // console.log('Назад');
-
                         this.currentY = this.currentY - 1;
                         this.path.push([this.currentX, this.currentY]);
                     }
 
                     // Иду Влево
                     if (this.direction === 270) {
-                        // console.log('Влево');
-
                         this.currentX = this.currentX + 1;
                         this.path.push([this.currentX, this.currentY]);
                     }
 
-                    // console.log('/---Иду---/');
                     console.log('-------------');
                     console.log(this.currentX);
                     console.log(this.currentY);
