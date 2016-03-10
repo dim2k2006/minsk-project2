@@ -3,7 +3,7 @@
 
 2. cd minsk-project2
 
-3 open index.html in browser
+3. open index.html in browser
 
 Лабиринт
 ========
