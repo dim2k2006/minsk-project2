@@ -1,3 +1,10 @@
+# SHRI 2016 project №2
+1. git clone git@github.com:dim2k2006/minsk-project2.git
+
+2. cd minsk-project2
+
+3 open index.html in browser
+
 Лабиринт
 ========
 
